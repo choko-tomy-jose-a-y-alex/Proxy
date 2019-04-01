@@ -1,0 +1,52 @@
+interface Celular {
+ void lanzaSiri();
+
+ void lanzaGoogleNow();
+}
+
+class CelularChino implements Celular {
+ @Override
+ public void lanzaSiri() {
+   System.out.println("Ejecutando Siri...");
+ }
+
+ @Override
+ public void lanzaGoogleNow() {
+   System.out.println("Ejecutando GoogleNow...");
+ }
+}
+
+class CelularIphone implements Celular {
+ private final String palabra;
+ private final CelularChino celch;
+
+ CelularIphone(String palabra, CelularChino celch) {
+   this.palabra = palabra;
+   this.celch = celch;
+ }
+
+ @Override
+ public void lanzaSiri() {
+   if ("Hola Siri".equals(palabra)) {
+     celch.lanzaSiri();
+   } else {
+     throw new IllegalAccessError("Solo las palabras -Hola Siri- pueden llamar a Siri");
+   }
+ }
+
+ @Override
+ public void lanzaGoogleNow() {
+   throw new IllegalAccessError("Las palabras -Hola Siri- no pueden llamar a GoogleNow");
+ }
+}
+
+public class Control {
+ public static void main(String[] n) {
+   final CelularChino celularChino = new CelularChino();
+   celularChino.lanzaSiri();
+   celularChino.lanzaGoogleNow();
+   final CelularIphone celularIphone = new CelularIphone("Hola Siri", celularChino);
+   celularIphone.lanzaSiri();
+   celularIphone.lanzaGoogleNow();
+ }
+}
